@@ -8,8 +8,10 @@ import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import Badge from '@material-ui/core/Badge';
 import Item from './Items/Item';
 import Cart from './Cart/Cart';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+
 //Styles
-import { Wrapper, StyledButton } from './App.styles';
+import { Wrapper, StyledButton, ButtonDarkMode } from './App.styles';
 
 export type CartItemType = {
 	id: number;
@@ -26,6 +28,7 @@ const getProducts = async (): Promise<CartItemType[]> =>
 
 const App = () => {
 	const [cartOpen, setCartOpen] = useState(false);
+	const [darkMode, setDarkMode] = useState(false);
 	const [cartItems, setCartItems] = useState([] as CartItemType[]);
 
 	const { data, isLoading, error } = useQuery<CartItemType[]>('products', getProducts);
@@ -64,7 +67,7 @@ const App = () => {
 	};
 	if (isLoading) return <LinearProgress />;
 	if (error) return <div>Something went wrong ...</div>;
-
+	console.log(darkMode);
 	return (
 		<Wrapper>
 			<Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
@@ -79,6 +82,11 @@ const App = () => {
 					<AddShoppingCartIcon />
 				</Badge>
 			</StyledButton>
+			<ButtonDarkMode onClick={() => setDarkMode(!darkMode)}>
+				<Brightness4Icon />
+			</ButtonDarkMode>
+			
+			
 			<Grid container spacing={3}>
 				{data?.map((item) => (
 					<Grid item key={item.id} xs={12} sm={4}>
